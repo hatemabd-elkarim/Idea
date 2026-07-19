@@ -9,8 +9,12 @@
 </head>
 <body class="bg-background text-foreground">
     <x-layout.nav />
-    <main class="max-w-7xl mx-auto px-6 py-10">
+    <main class="max-w-7xl mx-auto px-6">
         {{ $slot }}
     </main>
+
+    @session('sucess')
+        <div class="bg-primary px-4 py-3 absolute bottom-4 right-4 rounded-lg">{{ $value }}</div>
+    @endsession
 </body>
 </html>
