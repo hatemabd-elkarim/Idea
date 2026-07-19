@@ -9,6 +9,7 @@
             @auth
                 <form action="/logout" method="POST">
                     @csrf
+                    @method('DELETE')
                     <button class="btn bg-red-500">Log Out</button>
                 </form>
             @endauth
