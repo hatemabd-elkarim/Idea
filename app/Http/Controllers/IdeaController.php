@@ -21,7 +21,7 @@ class IdeaController extends Controller
         if (!in_array($status, IdeaStatus::values())) {
             $status = null;
         }
-        
+
         $ideas = Idea::query()
             ->where('user_id', Auth::id())
             ->when($status, fn($query, $status) => $query->where('status', $status))
@@ -55,6 +55,9 @@ class IdeaController extends Controller
     public function show(Idea $idea)
     {
         //
+        return view('idea.show',[
+            'idea' => $idea,
+        ]);
     }
 
     /**
@@ -79,5 +82,8 @@ class IdeaController extends Controller
     public function destroy(Idea $idea)
     {
         //
+        $idea->delete();
+
+        return redirect('/ideas');
     }
 }
