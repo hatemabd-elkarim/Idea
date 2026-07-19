@@ -1,13 +1,16 @@
 @props(['name', 'title'])
 
 <div
-    x-data="{ show: false, name: @js($name) }"
+    x-data="{
+    show: @js($errors->any()),
+    name: @js($name)
+    }"
     x-show="show"
-    x-trap="show"
-    @open-modal.window="show = ($event.detail === name)"
+    @open-modal.window="if($event.detail === name) show = true"
+    @close-modal="show = false"
     @keydown.escape.window="show = false"
     x-transition:enter="ease-out duration-250"
-    x-transition:enter-start="opacity-0 -translate-y-4"
+    x-transition:enter-start="opacity-0 -translate-y-24 -translate-x-24"
     x-transition:enter-end="opacity-100"
     x-transition:leave="ease-in duration-250"
     x-transition:leave-start="opacity-100"
@@ -19,15 +22,19 @@
     aria-labelledby="modal-{{ $name }}-title"
     :aria-hidden="!show"
     tabindex="-1"
-    id="modal-{{ $name }}"
-
+    :inert="!show"
 >
-    <x-card is="div" @click.away="show = false">
-        <div>
-            <h2 id="modal-{{ $name }}-title" class="text-2xl font-bold">{{ $title }}</h2>
+    <x-card is="div" @click.away="show = false" class="shadow-xl max-w-2xl w-full max-h-[80dvh] overflow-auto">
+        <div class="flex justify-between items-center">
+            <h2 id="modal-{{ $name }}-title" class="text-xl font-bold mb-4">{{ $title }}</h2>
+            <button class="border border-border rounded-full p-1 group hover:border-red-500/30 hover:bg-red-300/20">
+                <x-icons.close
+                    @click="show=false"
+                    class="w-6 cursor-pointer group-hover:fill-red-500/80" />
+            </button>
         </div>
 
-        <div>
+        <div class="mt-4">
             {{ $slot }}
         </div>
     </x-card>
