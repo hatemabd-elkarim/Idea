@@ -34,7 +34,7 @@ class SessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect('/')->with('success', 'logged in successfully');
+        return redirect()->intended('/')->with('success', 'logged in successfully');
     }
 
     public function destroy()
