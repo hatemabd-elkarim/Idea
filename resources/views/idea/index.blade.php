@@ -26,11 +26,59 @@
                     <div class="mt-4">{{ $idea->created_at->diffForHumans() }}</div>
                 </x-card>
                 @empty
-                    <h2 class="text-4xl font-bold text-purple-600 ">No ideas at this time</h2>
+                    <x-card>No ideas at this time</x-card>
                 @endforelse
             </div>
         </div>
 
-        <x-modal name="create-idea" title="New Idea" />
+        <x-modal name="create-idea" title="New Idea"> 
+                <form
+                x-data="{status:'pending'}"
+                method="POST" action="{{ route('ideas.store') }}">
+                @csrf
+
+                <div class="space-y-6">
+                    <x-form.field
+                        label="Title"
+                        name="title"
+                        type="text"
+                        placeholder="Enter a title for your idea"
+                        required
+                        autofocus
+                    />
+                    <x-form.error name="title"/>
+
+                    <div class="space-y-4">
+                        <label for="status" class="lablel">Status</label>
+                        <div class="flex gap-x-4 mt-2">
+                            @foreach(App\IdeaStatus::cases() as $status)
+                                <button
+                                    type="button"
+                                    @click="status = @js($status->value)"
+                                    class="btn flex-1 h-10"
+                                    :class="{'btn-outlined': status !== @js($status->value)}"
+                                >
+                                    {{ $status->label() }}
+                                </button>
+                            @endforeach
+                                <input type="hidden" name="status" id="status" :value="status" />
+                        </div>
+                    </div>
+                        <x-form.field
+                                label="Description"
+                                name="description"
+                                type="textarea"
+                                placeholder="Describe here your idea ...." 
+                        />
+                </div>
+                <div class="flex justify-end gap-x-5 mt-4 pr-4">
+                    <button type="button"  @click="$dispatch('close-modal')"
+                            class="btn btn-outlined font-bold hover:text-red-500/70 hover:font-extrabold">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn">Create</button>
+                </div>
+            </form>
+        </x-modal>
     </div>
 </x-layout>
