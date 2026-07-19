@@ -14,8 +14,13 @@ enum IdeaStatus: string
 
         return match ($this) {
             self::PENDING => 'Pending',
-            self::IN_PROGRESS => 'IN Progress',
+            self::IN_PROGRESS => 'In Progress',
             self::COMPLETED => 'Completed',
         };
+    }
+
+    public static function values()
+    {
+        return array_map(fn($status) => $status->value, static::cases());
     }
 }

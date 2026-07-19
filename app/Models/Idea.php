@@ -32,4 +32,20 @@ class Idea extends Model
     {
         return $this->hasMany(Step::class);
     }
+
+    public static function statusCounts(User $user)
+    {
+        $counts = $user->ideas()
+            ->selectRaw('status, count(*) as count')
+            ->groupBY('status')
+            ->pluck('count', 'status'); // pluck(as value, as key)
+
+        $statusCount = collect(IdeaStatus::cases())
+            ->mapWithKeys(fn($status) => [
+                $status->value => $counts->get($status->value, 0),
+            ])
+            ->put('all', $user->ideas()->count());
+
+        return $statusCount;
+    }
 }
