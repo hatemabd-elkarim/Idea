@@ -4,6 +4,9 @@
             <h1 class="text-3xl font-bold">Ideas</h1>
             <p class="text-muted-foreground text-sm mt-2"> Capture yor thoughts. Make a plan.</p>
         </header>
+
+        <x-idea.filter-buttons :statusCounts="$statusCounts"/>
+        
         <div class="mt-10">
             <div class="grid md:grid-cols-2 gap-6">
                 @forelse($ideas as $idea)
