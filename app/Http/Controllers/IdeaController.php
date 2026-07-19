@@ -50,6 +50,7 @@ class IdeaController extends Controller
         //
         Auth::user()->ideas()->create($request->validated());
 
+        dd($request->all());
         return redirect('/ideas')
             ->with('success', 'idea created successfully');
     }
