@@ -10,6 +10,9 @@ it('creates a new idea', function () {
         ->fill('title', 'some example title')
         ->click('@status-completed-button')
         ->fill('description', 'some example description')
+        ->fill('@new-link', "https://example.com")
+        ->click('@submit-new-link')
+        ->debug()
         ->click('Create')
         ->assertPathIs('/ideas');
 

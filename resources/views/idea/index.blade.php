@@ -81,8 +81,10 @@
                             <fieldset class="space-y-3">
                                 <legend class="label">Links</legend>
 
-                                <template x-for="(link, index) in links" :key="index">                                    <div class="flex gap-x-2 items-center">
+                                <template x-for="(link, index) in links">                                    
+                                    <div class="flex gap-x-2 items-center">
                                         <input
+                                            type="url"
                                             x-model="links[index]"
                                             name="links[]"
                                             class="input flex-1"
@@ -105,6 +107,7 @@
                                         type="url"
                                         id="new-link"
                                         placeholder="https://example.com"
+                                        data-test="new-link"
                                         autocomplete="url"
                                         class="input flex-1"
                                         spellcheck="false"
@@ -116,6 +119,7 @@
                                         :disabled="newLink.trim().length === 0"
                                         aria-label="Add a new link"
                                         class="form-muted-icon"
+                                        data-test="submit-new-link"                                        
                                         >
                                         <x-icons.close class="rotate-45" />
                                     </button>
