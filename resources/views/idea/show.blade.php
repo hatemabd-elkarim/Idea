@@ -41,7 +41,7 @@
                         </a>
                     </div>
                     @empty
-                        <h3 class="text-3xl text-amber-500">No links at time</h3>
+                        <x-card is="h3">No links at time </x-card>
                     @endforelse
             </div>
     </div>
