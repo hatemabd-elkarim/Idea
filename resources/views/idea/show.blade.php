@@ -29,17 +29,34 @@
 
             <div class="mt-5 ">{{ $idea->description }}</div>
         </div>
+
+            <div class="mt-4 space-y-1">
+                <h4 class="text-xl mb-1.5">Actionable Steps</h4>
+                    @forelse($idea->steps as $step)
+                    <x-card is="div">
+                        <form method="POST" action="{{ route('step.update', $step) }}">
+                            @csrf
+                            @method('PATCH')
+                            <div class="flex item-center gap-x-3">
+                                <button type="submit" role="checkbox" class="size-5 flex items-center justify-center rounded-lg text-primary-foreground {{ $step->completed ? 'bg-primary' : 'border border-primary' }}">&check;</button>
+                                <span class="{{ $step->completed ? 'line-through text-muted-foreground' : '' }}"> {{ $step->description }} </span>
+                            </div>
+                        </form>
+                    </x-card>
+                    @empty
+                        <x-card is="h3">No steps at time </x-card>
+                    @endforelse
+            </div>
+            
             <div class="mt-4 space-y-1">
                 <h4 class="text-xl mb-1.5">Links</h4>
                     @forelse($idea->links as $link)
-                    <div class="border border-border rounded-lg bg-card p-4 md:text-sm">
-                        <a href="{{$link}}"
-                           target="_blank"
-                           class="text-sm text-green-500/60 flex gap-2 hover:text-primary max-w-fit">
+                    <x-card href="{{ $link }}" class="text-primary font-medium flex gap-x-3 items-center hover:text-green-500/60">
+                        <div class="flex item-center gap-x-3">
                             <x-icons.external />
-                            {{ $link }}
-                        </a>
-                    </div>
+                            <span> {{ $link }} </span>
+                        </div>
+                    </x-card>
                     @empty
                         <x-card is="h3">No links at time </x-card>
                     @endforelse

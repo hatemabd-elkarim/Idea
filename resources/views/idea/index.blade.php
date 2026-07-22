@@ -36,6 +36,8 @@
                 <form
                 x-data="{
                 status:'pending',
+                newStep: '',
+                steps: [],
                 newLink: '',
                 links: [],
                 }"
@@ -77,6 +79,59 @@
                                 placeholder="Describe here your idea ...." 
                         />
 
+                        {{--  Steps --}}
+
+                        <div>
+                            <fieldset class="space-y-3">
+                                <legend class="label">Actionable Steps</legend>
+
+                                <template x-for="(step, index) in steps">                                    
+                                    <div class="flex gap-x-2 items-center">
+                                        <input
+                                            type="text"
+                                            x-model="steps[index]"
+                                            name="steps[]"
+                                            class="input flex-1"
+                                        >
+
+                                        <button 
+                                            type="button" 
+                                            aria-label="Remove Step"
+                                            @click="steps.splice(index, 1)"
+                                            class="form-muted-icon"
+                                            >
+                                            <x-icons.close />
+                                        </button>
+                                    </div>
+                                </template>
+
+                                <div class="flex gap-x-2 items-center">
+                                    <input 
+                                        x-model="newStep"
+                                        type="text"
+                                        id="new-step"
+                                        placeholder="my next step is ..."
+                                        data-test="new-step"
+                                        class="input flex-1"
+                                        spellcheck="false"
+                                    >
+
+                                    <button 
+                                        type="button" 
+                                        @click="steps.push(newStep.trim()); newStep = '';"
+                                        :disabled="newStep.trim().length === 0"
+                                        aria-label="Add a new step"
+                                        class="form-muted-icon"
+                                        data-test="submit-new-step"                                        
+                                        >
+                                        <x-icons.close class="rotate-45" />
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </div>
+
+
+                        {{-- Links --}}
                         <div>
                             <fieldset class="space-y-3">
                                 <legend class="label">Links</legend>
