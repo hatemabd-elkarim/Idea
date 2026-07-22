@@ -18,7 +18,13 @@
             </div>
 
         </div>
-        <h3 class="text-foreground text-lg mb-3">{{$idea->title}}</h3>
+
+        @if($idea->image_path)
+            <div class="rounded-lg overflow-hidden">
+                <img src="{{ asset('storage/' . $idea->image_path) }}" alt="" class="w-full" h-auto object-cover>
+            </div>
+        @endif
+        <h3 class="text-foreground text-xl mb-1.5 mt-3">{{$idea->title}}</h3>
 
         <div @class(['border border-border rounded-lg bg-card p-4 md:text-sm']) >
 
@@ -27,7 +33,7 @@
                 <p class="text-xs text-muted-foreground">{{ $idea->created_at->diffForHumans() }}</p>
             </div>
 
-            <div class="mt-5 ">{{ $idea->description }}</div>
+            <div class="mt-5 ">{{ $idea->description ?? 'No description provided'}}</div>
         </div>
 
             <div class="mt-4 space-y-1">
