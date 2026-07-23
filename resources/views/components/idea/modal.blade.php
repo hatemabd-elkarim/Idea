@@ -1,11 +1,12 @@
 @props(['idea' => new \App\Models\Idea()])
 
 <x-modal :name="$idea->exists ? 'edit-idea' : 'create-idea'" :title="$idea->exists ? 'Edit Idea' : 'New Idea'">
+
     <form
         x-data="{
             status: @js(old('status', $idea->status->value)),
             newStep: '',
-            steps: @js(old('steps', $idea->steps->map(fn($step) => $step->description))),
+            steps: @js(old('steps', $idea->steps->map->only(['id', 'description', 'completed']))),
             newLink: '',
             links: @js(old('links', $idea->links ?? [])),
             }"
@@ -79,9 +80,15 @@
                         <template x-for="(step, index) in steps">                                    
                             <div class="flex gap-x-2 items-center">
                                 <input
-                                    type="text"
-                                    x-model="steps[index]"
-                                    name="steps[]"
+                                    x-model="step.description"
+                                    :name="`steps[${index}][description]`"
+                                    class="input flex-1"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    :value="step.completed ? '1' : '0' "
+                                    :name="`steps[${index}][completed]`"
                                     class="input flex-1"
                                 >
 
@@ -109,7 +116,7 @@
 
                             <button 
                                 type="button" 
-                                @click="steps.push(newStep.trim()); newStep = '';"
+                                @click="steps.push({ description: newStep.trim(), completed: false}); newStep = '';"
                                 :disabled="newStep.trim().length === 0"
                                 aria-label="Add a new step"
                                 class="form-muted-icon"
