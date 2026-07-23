@@ -8,6 +8,7 @@ use App\IdeaStatus;
 use App\Models\Idea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Actions\CreateIdea;
 
 class IdeaController extends Controller
 {
@@ -45,20 +46,10 @@ class IdeaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreIdeaRequest $request)
+    public function store(StoreIdeaRequest $request, CreateIdea $action)
     {
         //
-        $idea = Auth::user()->ideas()->create($request->safe()->except(['steps', 'image']));
-
-        $idea->steps()->createMany(
-            collect($request->steps)->map(fn($step) => ['description' => $step])
-        );
-
-        $imagePath = $request->image->store('ideas', 'public');
-
-        $idea->update([
-            'image_path' => $imagePath,
-        ]);
+        $action->handle($request->safe()->all());
 
         return redirect('/ideas')
             ->with('success', 'idea created successfully');

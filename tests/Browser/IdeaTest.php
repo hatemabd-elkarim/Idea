@@ -12,6 +12,8 @@ it('creates a new idea', function () {
         ->fill('description', 'some example description')
         ->fill('@new-link', "https://example.com")
         ->click('@submit-new-link')
+        ->fill('@new-step', "example step")
+        ->click('@submit-new-step')
         ->debug()
         ->click('Create')
         ->assertPathIs('/ideas');
@@ -22,5 +24,7 @@ it('creates a new idea', function () {
         'title' => 'some example title',
         'description' => 'some example description',
         'status' => 'completed',
+        'links' => ['https://example.com'],
+        'steps' => ['example step'],
     ]);
 });
