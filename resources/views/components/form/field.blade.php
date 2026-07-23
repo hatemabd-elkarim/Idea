@@ -23,5 +23,5 @@
     />
     @endif
 
-    <x-form.error name="name"/>
+    <x-form.error :name=$name/>
 </div>

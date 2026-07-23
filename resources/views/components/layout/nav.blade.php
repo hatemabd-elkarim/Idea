@@ -7,6 +7,7 @@
         </div>
         <div class="flex gap-x-5 items-center">
             @auth
+                <a href="/profile">My Profile</a> 
                 <form action="/logout" method="POST">
                     @csrf
                     @method('DELETE')
