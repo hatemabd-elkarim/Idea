@@ -8,6 +8,10 @@ use App\IdeaStatus;
 use App\Models\Idea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
+use App\Actions\CreateIdea;
+use App\Actions\UpdateIdea;
 
 class IdeaController extends Controller
 {
@@ -45,10 +49,10 @@ class IdeaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreIdeaRequest $request)
+    public function store(StoreIdeaRequest $request, CreateIdea $action)
     {
         //
-        Auth::user()->ideas()->create($request->validated());
+        $action->handle($request->safe()->all());
 
         return redirect('/ideas')
             ->with('success', 'idea created successfully');
@@ -60,6 +64,7 @@ class IdeaController extends Controller
     public function show(Idea $idea)
     {
         //
+        Gate::authorize('workWith', $idea);
         return view('idea.show', [
             'idea' => $idea,
         ]);
@@ -76,9 +81,14 @@ class IdeaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateIdeaRequest $request, Idea $idea)
+    public function update(UpdateIdeaRequest $request, Idea $idea, UpdateIdea $action)
     {
         //
+        Gate::authorize('workWith', $idea);
+
+        $action->handle($request->safe()->all(), $idea);
+
+        return back()->with('success', 'idea updated successfully');
     }
 
     /**
@@ -87,8 +97,20 @@ class IdeaController extends Controller
     public function destroy(Idea $idea)
     {
         //
+        Gate::authorize('workWith', $idea);
         $idea->delete();
 
         return redirect('/ideas');
+    }
+
+    public function destroyImage(Idea $idea)
+    {
+        Gate::authorize('workWith', $idea);
+
+        Storage::disk('public')->delete($idea->image_path);
+
+        $idea->update(['image_path' => null]);
+
+        return back()->with('open-modal', 'edit-idea');
     }
 }

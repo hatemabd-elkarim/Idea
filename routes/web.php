@@ -4,8 +4,8 @@ use App\Http\Controllers\IdeaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
-
-
+use App\Http\Controllers\StepController;
+use App\Http\Controllers\ProfileController;
 
 Route::redirect('/', '/ideas');
 
@@ -29,5 +29,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get("/ideas/{idea}", [IdeaController::class, 'show'])->name('idea.show');
 
+    Route::patch("/ideas/{idea}", [IdeaController::class, 'update'])->name('idea.update');
+
+    Route::patch("/steps/{step}", [StepController::class, 'update'])->name('step.update');
+
     Route::delete("/ideas/{idea}", [IdeaController::class, 'destroy'])->name('idea.destroy');
+
+    Route::delete("/ideas/{idea}/image", [IdeaController::class, 'destroyImage'])->name('idea.destroyImage');
+
+    Route::get("/profile", [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch("/profile", [ProfileController::class, 'update'])->name('profile.update');
 });
