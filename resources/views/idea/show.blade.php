@@ -38,7 +38,7 @@
                 <p class="text-xs text-muted-foreground">{{ $idea->created_at->diffForHumans() }}</p>
             </div>
 
-            <div class="mt-5 ">{{ $idea->description ?? 'No description provided'}}</div>
+            <div class="mt-5 prose prose-invert">{!! $idea->formattedDescription !!}</div>
         </div>
 
             <div class="mt-4 space-y-1">
