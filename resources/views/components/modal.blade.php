@@ -2,7 +2,7 @@
 
 <div
     x-data="{
-    show: @js($errors->any()),
+    show: @js(session('open-modal') === $name || $errors->any()),
     name: @js($name)
     }"
     x-show="show"
