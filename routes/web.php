@@ -30,7 +30,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get("/ideas/{idea}", [IdeaController::class, 'show'])->name('idea.show');
 
+    Route::patch("/ideas/{idea}", [IdeaController::class, 'update'])->name('idea.update');
+
     Route::patch("/steps/{step}", [StepController::class, 'update'])->name('step.update');
 
     Route::delete("/ideas/{idea}", [IdeaController::class, 'destroy'])->name('idea.destroy');
+
+    Route::delete("/ideas/{idea}/image", [IdeaController::class, 'destroyImage'])->name('idea.destroyImage');
 });

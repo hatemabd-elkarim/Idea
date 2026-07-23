@@ -6,7 +6,12 @@
                 Back to Ideas
             </a>
             <div class="gap-x-3 flex items-center">
-                <button class="btn btn-outlined">
+                <button 
+                class="btn btn-outlined"
+                x-data
+                data-test="edit-idea-button"
+                @click="$dispatch('open-modal', 'edit-idea')"
+                >
                     <x-icons.external />
                     Edit
                 </button>
@@ -24,7 +29,7 @@
                 <img src="{{ asset('storage/' . $idea->image_path) }}" alt="" class="w-full" h-auto object-cover>
             </div>
         @endif
-        <h3 class="text-foreground text-xl mb-1.5 mt-3">{{$idea->title}}</h3>
+        <h3 class="text-foreground text-3xl mb-1.5 mt-3 text-transform: capitalize">{{$idea->title}}</h3>
 
         <div @class(['border border-border rounded-lg bg-card p-4 md:text-sm']) >
 
@@ -67,5 +72,7 @@
                         <x-card is="h3">No links at time </x-card>
                     @endforelse
             </div>
+            
+            <x-idea.modal :idea="$idea" />
     </div>
 </x-layout.layout>

@@ -9,6 +9,7 @@ use App\Models\Idea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use App\Actions\CreateIdea;
 
 class IdeaController extends Controller
@@ -90,8 +91,20 @@ class IdeaController extends Controller
     public function destroy(Idea $idea)
     {
         //
+        Gate::authorize('workWith', $idea);
         $idea->delete();
 
         return redirect('/ideas');
+    }
+
+    public function destroyImage(Idea $idea)
+    {
+        Gate::authorize('workWith', $idea);
+
+        Storage::disk('public')->delete($idea->image_path);
+
+        $idea->update(['image_path' => null]);
+
+        return back()->with('open-modal', 'edit-idea');
     }
 }
